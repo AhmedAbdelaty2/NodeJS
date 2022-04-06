@@ -4,7 +4,6 @@ var fun = (name, bDate) => {
     if(!regx.test(bDate)){
         return "date should be something like 19-4-1975";
     }else if(year[2]>=2020){
-        var today = new Date(bDate);
         return "invalid date";
     }else{
         var today = new Date();
