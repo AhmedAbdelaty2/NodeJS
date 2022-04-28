@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" >
+    <script src="/socket.io/socket.io.js"></script>
+    <script  type="text/javascript" >
+        let name= prompt('enter your name')
+
+        var socket = io.connect('http://localhost:3000')
+        
+        socket.on('messages',function(data,name){
+            displayMessage(data,"message_from_someone",name)
+        })
+        
+        function displayMessage(text_message,class_name,name){
+            let chat_area=document.getElementsByClassName("chat-area")[0]
+            let message=document.createElement('div')
+            message.className=class_name
+            message.innerHTML=`${name}:${text_message}`
+            chat_area.appendChild(message)
+        }
+
+        function sendMessage(){
+            let text_message=document.getElementsByClassName('message-content')[0].value
+            document.getElementsByClassName('message-content')[0].value=''
+            displayMessage(text_message,"message","you")
+            socket.emit('message',text_message,name)
+        }
+    </script>
+    <style>
+        .container{
+            width: 500px;
+            height: 500px;
+            background-color: #ccc;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            margin: 15px;
+            padding: 10px;
+            border: solid black;
+            border-radius: 10px;
+        }
+        .chat-area{
+            height: 300px;
+            width: 300px;
+            position: relative;
+            left: 50%;
+            top: 0%;
+            transform: translate(-50%,0%);
+            background-color: aliceblue;
+            padding: 10px;
+            border-radius: 10px; 
+        }
+        .controllers{
+            display: flex;
+            padding: 10px;
+            margin: 10px;
+        }
+        .message-content{
+            height: 20px;
+            width: 300px;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        #send-button{
+            height: 40px;
+            width: 135px;
+            color: antiquewhite;
+            background-color: #303030;
+            margin-left: 15px;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .bts:hover {
+            opacity: 0.8;
+        }
+        .message{
+            height: 20px;
+            width: 200px;
+            font-size: 24;
+            margin: 5px;
+            background-color: #ccc;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .message_from_someone{
+            height: 20px;
+            width: 200px;
+            font-size: 24;
+            margin: 5px;
+            color: #ccc;
+            background-color: #303030;
+            border-radius: 10px;
+            padding: 5px;
+            align-items: left;
+        }
+    </style>
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-area">
+
+        </div>
+        <div class="controllers">
+            <label style="margin-top: 10px;">message:</label>
+            <input type="text" class="message-content">
+            <input type="button"  value="send" id="send-button" onclick="sendMessage()"/>
+        </div>
+    </div>
+</body>
+</html>
